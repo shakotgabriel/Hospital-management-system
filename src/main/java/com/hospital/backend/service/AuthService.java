@@ -13,7 +13,6 @@ import java.time.OffsetDateTime;
 import java.util.Locale;
 import java.util.Set;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,18 @@ public class AuthService {
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
 	private final JwtUtils jwtUtils;
-	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	private final PasswordEncoder passwordEncoder;
 
-	public AuthService(UserRepository userRepository, RoleRepository roleRepository, JwtUtils jwtUtils) {
+	public AuthService(
+		UserRepository userRepository,
+		RoleRepository roleRepository,
+		JwtUtils jwtUtils,
+		PasswordEncoder passwordEncoder
+	) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.jwtUtils = jwtUtils;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Transactional
