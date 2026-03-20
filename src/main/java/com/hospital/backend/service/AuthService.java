@@ -49,6 +49,9 @@ public class AuthService {
 		}
 
 		String requestedRole = request.getRole().trim().toUpperCase(Locale.ROOT);
+		if ("ADMIN".equals(requestedRole)) {
+			throw new IllegalArgumentException("ADMIN accounts can only be created by an existing admin");
+		}
 		Role role = roleRepository.findByName(requestedRole)
 			.orElseThrow(() -> new IllegalArgumentException("Role not found: " + requestedRole));
 
