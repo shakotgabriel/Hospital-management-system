@@ -17,6 +17,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 		OffsetDateTime dayEnd
 	);
 
+	List<Appointment> findByDoctorIdOrderByScheduledStartDesc(Long doctorId);
+
 	List<Appointment> findByPatientIdOrderByScheduledStartDesc(Long patientId);
 
 	@Query(
@@ -31,6 +33,25 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 	)
 	boolean existsOverlappingAppointment(
 		@Param("doctorId") Long doctorId,
+		@Param("newStart") OffsetDateTime newStart,
+		@Param("newEnd") OffsetDateTime newEnd,
+		@Param("activeStatuses") Collection<AppointmentStatus> activeStatuses
+	);
+
+	@Query(
+		"""
+		SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END
+		FROM Appointment a
+		WHERE a.doctor.id = :doctorId
+		  AND a.id <> :appointmentId
+		  AND a.status IN :activeStatuses
+		  AND a.scheduledStart < :newEnd
+		  AND a.scheduledEnd > :newStart
+		"""
+	)
+	boolean existsOverlappingAppointmentExcluding(
+		@Param("doctorId") Long doctorId,
+		@Param("appointmentId") Long appointmentId,
 		@Param("newStart") OffsetDateTime newStart,
 		@Param("newEnd") OffsetDateTime newEnd,
 		@Param("activeStatuses") Collection<AppointmentStatus> activeStatuses
