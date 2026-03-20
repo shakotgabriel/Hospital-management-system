@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) {
-		// Load .env file and set environment variables
+
 		Dotenv dotenv = Dotenv.configure()
 			.ignoreIfMissing()
 			.load();
@@ -17,7 +17,7 @@ public class BackendApplication {
 				System.setProperty(entry.getKey(), entry.getValue());
 			}
 		});
-		
+
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
