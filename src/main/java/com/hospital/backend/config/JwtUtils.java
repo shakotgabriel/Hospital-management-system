@@ -19,7 +19,7 @@ public class JwtUtils {
 	private final long expirationMillis;
 
 	public JwtUtils(
-		@Value("${app.jwt.secret:ZmFrZS1kZW1vLXNlY3JldC1jaGFuZ2UtdGhpcy1pbi1wcm9kLTAxMjM0NTY3ODk}") String jwtSecret,
+		@Value("${app.jwt.secret}") String jwtSecret,
 		@Value("${app.jwt.expiration-ms:" + DEFAULT_EXPIRATION_MILLIS + "}") long expirationMillis
 	) {
 		byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);

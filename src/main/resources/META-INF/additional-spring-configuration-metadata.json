@@ -1,0 +1,35 @@
+{
+  "properties": [
+    {
+      "name": "app.jwt.secret",
+      "type": "java.lang.String",
+      "description": "JWT signing secret in Base64 format. Required in environment."
+    },
+    {
+      "name": "app.jwt.expiration-ms",
+      "type": "java.lang.Long",
+      "description": "JWT token expiration time in milliseconds.",
+      "defaultValue": 86400000
+    },
+    {
+      "name": "app.admin.email",
+      "type": "java.lang.String",
+      "description": "Bootstrap administrator account email. Required in environment."
+    },
+    {
+      "name": "app.admin.password",
+      "type": "java.lang.String",
+      "description": "Bootstrap administrator account password. Required in environment."
+    },
+    {
+      "name": "app.admin.first-name",
+      "type": "java.lang.String",
+      "description": "Bootstrap administrator first name. Required in environment."
+    },
+    {
+      "name": "app.admin.last-name",
+      "type": "java.lang.String",
+      "description": "Bootstrap administrator last name. Required in environment."
+    }
+  ]
+}
