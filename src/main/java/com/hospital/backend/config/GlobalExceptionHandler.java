@@ -13,11 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
@@ -167,6 +169,36 @@ public class GlobalExceptionHandler {
 		);
 		errorResponse.setPath(ex.getRequestURL());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+	}
+
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	@ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+	public ResponseEntity<ErrorResponse> handleUnsupportedMediaType(
+		HttpMediaTypeNotSupportedException ex,
+		WebRequest request
+	) {
+		ErrorResponse errorResponse = new ErrorResponse(
+			HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(),
+			"Unsupported Media Type",
+			"Use Content-Type: application/json"
+		);
+		errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
+		return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(errorResponse);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ResponseEntity<ErrorResponse> handleUnreadableMessage(
+		HttpMessageNotReadableException ex,
+		WebRequest request
+	) {
+		ErrorResponse errorResponse = new ErrorResponse(
+			HttpStatus.BAD_REQUEST.value(),
+			"Malformed JSON",
+			"Request body is invalid JSON"
+		);
+		errorResponse.setPath(request.getDescription(false).replace("uri=", ""));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 
 	@ExceptionHandler(Exception.class)

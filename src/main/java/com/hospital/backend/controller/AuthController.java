@@ -2,7 +2,6 @@ package com.hospital.backend.controller;
 
 import com.hospital.backend.dto.ApiResponse;
 import com.hospital.backend.dto.LoginRequest;
-import com.hospital.backend.dto.SignupRequest;
 import com.hospital.backend.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,17 +20,6 @@ public class AuthController {
 
 	public AuthController(AuthService authService) {
 		this.authService = authService;
-	}
-
-	@PostMapping("/signup")
-	public ResponseEntity<ApiResponse<AuthService.AuthResponse>> signup(@Valid @RequestBody SignupRequest request) {
-		try {
-			AuthService.AuthResponse response = authService.signup(request);
-			return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ApiResponse.ok("Signup successful", response));
-		} catch (IllegalArgumentException ex) {
-			return ResponseEntity.badRequest().body(ApiResponse.error(ex.getMessage()));
-		}
 	}
 
 	@PostMapping("/login")
