@@ -62,13 +62,13 @@ public class BillingController {
 		}
 	}
 
-	@GetMapping("/admin/bills")
+	@GetMapping({ "/admin/bills", "/reception/bills", "/cashier/bills" })
 	public ResponseEntity<ApiResponse<List<BillingService.BillingResponse>>> listBillsForAdmin() {
 		List<BillingService.BillingResponse> response = billingService.listBillsForAdmin();
 		return ResponseEntity.ok(ApiResponse.ok("Bills fetched", response));
 	}
 
-	@GetMapping("/admin/bills/{billingId}")
+	@GetMapping({ "/admin/bills/{billingId}", "/reception/bills/{billingId}", "/cashier/bills/{billingId}" })
 	public ResponseEntity<ApiResponse<BillingService.BillingResponse>> getBillForAdmin(@PathVariable Long billingId) {
 		try {
 			BillingService.BillingResponse response = billingService.getBillForAdmin(billingId);
@@ -78,7 +78,7 @@ public class BillingController {
 		}
 	}
 
-	@PostMapping("/admin/bills")
+	@PostMapping({ "/admin/bills", "/reception/bills", "/cashier/bills" })
 	public ResponseEntity<ApiResponse<BillingService.BillingResponse>> createBillForAdmin(
 		@RequestBody BillingService.AdminCreateBillRequest request
 	) {
@@ -90,7 +90,7 @@ public class BillingController {
 		}
 	}
 
-	@PutMapping("/admin/bills/{billingId}")
+	@PutMapping({ "/admin/bills/{billingId}", "/reception/bills/{billingId}", "/cashier/bills/{billingId}" })
 	public ResponseEntity<ApiResponse<BillingService.BillingResponse>> updateBillForAdmin(
 		@PathVariable Long billingId,
 		@RequestBody BillingService.AdminUpdateBillRequest request
@@ -103,7 +103,7 @@ public class BillingController {
 		}
 	}
 
-	@PatchMapping("/admin/bills/{billingId}/issue")
+	@PatchMapping({ "/admin/bills/{billingId}/issue", "/reception/bills/{billingId}/issue", "/cashier/bills/{billingId}/issue" })
 	public ResponseEntity<ApiResponse<BillingService.BillingResponse>> issueBillForAdmin(@PathVariable Long billingId) {
 		try {
 			BillingService.BillingResponse response = billingService.issueBillForAdmin(billingId);
@@ -113,7 +113,7 @@ public class BillingController {
 		}
 	}
 
-	@PatchMapping("/admin/bills/{billingId}/void")
+	@PatchMapping({ "/admin/bills/{billingId}/void", "/reception/bills/{billingId}/void", "/cashier/bills/{billingId}/void" })
 	public ResponseEntity<ApiResponse<BillingService.BillingResponse>> voidBillForAdmin(@PathVariable Long billingId) {
 		try {
 			BillingService.BillingResponse response = billingService.voidBillForAdmin(billingId);

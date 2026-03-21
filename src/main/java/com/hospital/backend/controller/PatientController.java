@@ -47,7 +47,7 @@ public class PatientController {
 		}
 	}
 
-	@GetMapping("/admin/patients")
+	@GetMapping({ "/admin/patients", "/reception/patients" })
 	public ResponseEntity<ApiResponse<PatientService.PagedPatientResponse>> listPatients(
 		@RequestParam(required = false) String search,
 		@RequestParam(defaultValue = "0") int page,
@@ -57,7 +57,7 @@ public class PatientController {
 		return ResponseEntity.ok(ApiResponse.ok("Patients fetched", response));
 	}
 
-	@GetMapping("/admin/patients/{patientId}")
+	@GetMapping({ "/admin/patients/{patientId}", "/reception/patients/{patientId}" })
 	public ResponseEntity<ApiResponse<PatientService.PatientResponse>> getPatientById(@PathVariable Long patientId) {
 		try {
 			PatientService.PatientResponse response = patientService.getPatientById(patientId);
@@ -67,7 +67,7 @@ public class PatientController {
 		}
 	}
 
-	@PostMapping("/admin/patients")
+	@PostMapping({ "/admin/patients", "/reception/patients" })
 	public ResponseEntity<ApiResponse<PatientService.PatientResponse>> createPatient(
 		@RequestBody PatientService.AdminCreatePatientRequest request
 	) {
@@ -79,7 +79,7 @@ public class PatientController {
 		}
 	}
 
-	@PutMapping("/admin/patients/{patientId}")
+	@PutMapping({ "/admin/patients/{patientId}", "/reception/patients/{patientId}" })
 	public ResponseEntity<ApiResponse<PatientService.PatientResponse>> updatePatient(
 		@PathVariable Long patientId,
 		@RequestBody PatientService.AdminUpdatePatientRequest request
