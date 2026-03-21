@@ -121,13 +121,13 @@ public class AppointmentController {
 		}
 	}
 
-	@GetMapping("/admin/appointments")
+	@GetMapping({ "/admin/appointments", "/reception/appointments" })
 	public ResponseEntity<ApiResponse<List<AppointmentService.AppointmentResponse>>> listAppointmentsForAdmin() {
 		List<AppointmentService.AppointmentResponse> response = appointmentService.listAppointmentsForAdmin();
 		return ResponseEntity.ok(ApiResponse.ok("Appointments fetched", response));
 	}
 
-	@GetMapping("/admin/appointments/{appointmentId}")
+	@GetMapping({ "/admin/appointments/{appointmentId}", "/reception/appointments/{appointmentId}" })
 	public ResponseEntity<ApiResponse<AppointmentService.AppointmentResponse>> getAppointmentForAdmin(@PathVariable Long appointmentId) {
 		try {
 			AppointmentService.AppointmentResponse response = appointmentService.getAppointmentByIdForAdmin(appointmentId);
@@ -137,7 +137,7 @@ public class AppointmentController {
 		}
 	}
 
-	@PutMapping("/admin/appointments/{appointmentId}")
+	@PutMapping({ "/admin/appointments/{appointmentId}", "/reception/appointments/{appointmentId}" })
 	public ResponseEntity<ApiResponse<AppointmentService.AppointmentResponse>> updateAppointmentForAdmin(
 		@PathVariable Long appointmentId,
 		@RequestBody AppointmentService.AdminUpdateAppointmentRequest request

@@ -47,7 +47,7 @@ public class DoctorController {
 		}
 	}
 
-	@GetMapping("/admin/doctors")
+	@GetMapping({ "/admin/doctors", "/reception/doctors" })
 	public ResponseEntity<ApiResponse<DoctorService.PagedDoctorResponse>> listDoctors(
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size
@@ -56,7 +56,7 @@ public class DoctorController {
 		return ResponseEntity.ok(ApiResponse.ok("Doctors fetched", response));
 	}
 
-	@GetMapping("/admin/doctors/{doctorId}")
+	@GetMapping({ "/admin/doctors/{doctorId}", "/reception/doctors/{doctorId}" })
 	public ResponseEntity<ApiResponse<DoctorService.DoctorResponse>> getDoctorById(@PathVariable Long doctorId) {
 		try {
 			DoctorService.DoctorResponse response = doctorService.getDoctorById(doctorId);
@@ -66,7 +66,7 @@ public class DoctorController {
 		}
 	}
 
-	@PostMapping("/admin/doctors")
+	@PostMapping({ "/admin/doctors", "/reception/doctors" })
 	public ResponseEntity<ApiResponse<DoctorService.DoctorResponse>> createDoctor(
 		@RequestBody DoctorService.AdminCreateDoctorRequest request
 	) {
@@ -78,7 +78,7 @@ public class DoctorController {
 		}
 	}
 
-	@PutMapping("/admin/doctors/{doctorId}")
+	@PutMapping({ "/admin/doctors/{doctorId}", "/reception/doctors/{doctorId}" })
 	public ResponseEntity<ApiResponse<DoctorService.DoctorResponse>> updateDoctor(
 		@PathVariable Long doctorId,
 		@RequestBody DoctorService.AdminUpdateDoctorRequest request

@@ -30,6 +30,8 @@ public class DataInitializer {
 			Role adminRole = ensureRole(roleRepository, "ADMIN", "Full platform access");
 			ensureRole(roleRepository, "DOCTOR", "Doctor access");
 			ensureRole(roleRepository, "PATIENT", "Patient access");
+			ensureRole(roleRepository, "RECEPTIONIST", "Front desk operations and scheduling");
+			ensureRole(roleRepository, "CASHIER", "Billing and payment operations");
 
 			String normalizedAdminEmail = adminEmail.trim().toLowerCase(Locale.ROOT);
 			if (userRepository.existsByEmail(normalizedAdminEmail)) {
