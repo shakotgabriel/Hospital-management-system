@@ -30,12 +30,16 @@ public class RateLimitingConfig {
 			});
 	}
 
-	public boolean allowRequest(String ip) {
-		try {
-			RateLimiter limiter = limiters.get(Objects.requireNonNull(ip, "IP address cannot be null"));
-			return limiter.tryAcquire(1, 100, TimeUnit.MILLISECONDS);
-		} catch (ExecutionException e) {
-			return true;
-		}
-	}
+public boolean allowRequest(String ip) {
+    if (ip == null) {
+        throw new IllegalArgumentException("IP address cannot be null");
+    }
+
+    try {
+        RateLimiter limiter = limiters.get(ip);
+        return limiter.tryAcquire(1, 100, TimeUnit.MILLISECONDS);
+    } catch (ExecutionException e) {
+        return true; // fail-open strategy
+    }
+}
 }
