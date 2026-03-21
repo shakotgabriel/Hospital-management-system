@@ -185,6 +185,38 @@ public class AppointmentService {
 			.toList();
 	}
 
+	@Transactional
+	public AppointmentResponse bookAppointmentForAdmin(String actorEmail, AdminBookAppointmentRequest request) {
+		Patient patient = findPatientById(request.patientId());
+		Doctor doctor = findDoctorById(request.doctorId());
+		validateTimeWindow(request.scheduledStart(), request.scheduledEnd());
+
+		if (appointmentRepository.existsOverlappingAppointment(
+			doctor.getId(),
+			request.scheduledStart(),
+			request.scheduledEnd(),
+			ACTIVE_STATUSES
+		)) {
+			throw new IllegalArgumentException("Doctor already has an overlapping appointment");
+		}
+
+		Appointment appointment = new Appointment();
+		appointment.setPatient(patient);
+		appointment.setDoctor(doctor);
+		appointment.setScheduledStart(request.scheduledStart());
+		appointment.setScheduledEnd(request.scheduledEnd());
+		appointment.setReason(trimToNull(request.reason()));
+		appointment.setNotes(trimToNull(request.notes()));
+		appointment.setStatus(AppointmentStatus.BOOKED);
+
+		User actor = findUserByEmail(actorEmail);
+		appointment.setCreatedBy(actor);
+		appointment.setUpdatedBy(actor);
+
+		Appointment saved = appointmentRepository.save(appointment);
+		return toResponse(saved);
+	}
+
 	public AppointmentResponse getAppointmentByIdForAdmin(Long appointmentId) {
 		return toResponse(findAppointment(appointmentId));
 	}
@@ -240,6 +272,14 @@ public class AppointmentService {
 		}
 		return doctorRepository.findById(doctorId)
 			.orElseThrow(() -> new IllegalArgumentException("Doctor not found: " + doctorId));
+	}
+
+	private Patient findPatientById(Long patientId) {
+		if (patientId == null) {
+			throw new IllegalArgumentException("Patient id is required");
+		}
+		return patientRepository.findById(patientId)
+			.orElseThrow(() -> new IllegalArgumentException("Patient not found: " + patientId));
 	}
 
 	private User findUserByEmail(String email) {
@@ -315,6 +355,16 @@ public class AppointmentService {
 	}
 
 	public record RescheduleAppointmentRequest(
+		OffsetDateTime scheduledStart,
+		OffsetDateTime scheduledEnd,
+		String reason,
+		String notes
+	) {
+	}
+
+	public record AdminBookAppointmentRequest(
+		Long patientId,
+		Long doctorId,
 		OffsetDateTime scheduledStart,
 		OffsetDateTime scheduledEnd,
 		String reason,

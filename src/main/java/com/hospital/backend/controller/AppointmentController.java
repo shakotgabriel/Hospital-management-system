@@ -127,6 +127,22 @@ public class AppointmentController {
 		return ResponseEntity.ok(ApiResponse.ok("Appointments fetched", response));
 	}
 
+	@PostMapping({ "/admin/appointments", "/reception/appointments" })
+	public ResponseEntity<ApiResponse<AppointmentService.AppointmentResponse>> bookAppointmentForAdmin(
+		Principal principal,
+		@RequestBody AppointmentService.AdminBookAppointmentRequest request
+	) {
+		try {
+			AppointmentService.AppointmentResponse response = appointmentService.bookAppointmentForAdmin(
+				principal.getName(),
+				request
+			);
+			return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok("Appointment booked", response));
+		} catch (IllegalArgumentException ex) {
+			return ResponseEntity.badRequest().body(ApiResponse.error(ex.getMessage()));
+		}
+	}
+
 	@GetMapping({ "/admin/appointments/{appointmentId}", "/reception/appointments/{appointmentId}" })
 	public ResponseEntity<ApiResponse<AppointmentService.AppointmentResponse>> getAppointmentForAdmin(@PathVariable Long appointmentId) {
 		try {
