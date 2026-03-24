@@ -47,7 +47,6 @@ It ships with:
 * ✅ Full staff lifecycle: admin, receptionist, doctor, cashier
 * ✅ Patient records, appointments, billing, and prescription workflows
 * ✅ Consistent response envelope + centralized exception handling
-* ✅ A Postman collection ready to run on day one
 * ✅ Clean layered architecture — readable, maintainable, and easy to extend
 
 > **Security by default.** Public signup is disabled. Admin accounts are bootstrapped from environment variables. Every route guard is declared explicitly in `SecurityConfig.java`.
@@ -182,14 +181,7 @@ You should get `200 OK` with a JWT token. ✅
 
 ---
 
-## 🧪 API Testing (Postman)
 
-**Files:**
-
-* `Hospital-API.postman_collection.json`
-* `Hospital-API-Local.postman_environment.json`
-* `POSTMAN-QUICK-REFERENCE.md`
-* `POSTMAN-TESTING-GUIDE.md`
 
 **Recommended Test Order:**
 
@@ -223,10 +215,7 @@ hospital-management-system/
 │   │   ├── repository/  # JPA data access
 │   │   └── entity/      # Domain models
 │   └── docker-compose.yml
-├── Hospital-API.postman_collection.json
-├── Hospital-API-Local.postman_environment.json
-├── POSTMAN-QUICK-REFERENCE.md
-└── POSTMAN-TESTING-GUIDE.md
+
 ```
 
 ---
